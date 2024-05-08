@@ -4,16 +4,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express(); // Fixed missing parentheses
-const server_config = require("./configs/server.configs.js");
+const server_config = require("./configs/server.config");
 const { db_config, DB_URL } = require("./configs/db.config");
-const user_model = require ("./user.model")
+const user_model = require("./user.model");
+const bcrypt = require("bcryptjs");
 
-//const { init } = require("./init"); // Assuming init function is defined in init.js
-
-/**
- * Create an admin user at the starting of the application
- * If not already present
- */
 // Connection with MongoDB
 mongoose.connect(DB_URL);
 const connection = mongoose.connection;
@@ -24,9 +19,26 @@ connection.once("open", () => {
     console.log("Connected to MongoDB");
     init(); // Call init function here
 });
-async function init () {
-    let user = await user_model.findOne ({userID : "admin"})
+async function init() {
+    let user = await user_model.findOne({ userID: "admin" });
+    if (user) {
+        console.log("Admin is already present");
+        return;
+    }
+    try {
+        user = await user_model.create({
+            name: "Vishwa",
+            userID: "admin",
+            email: "kankvish@gmail.com",
+            userType: "ADMIN",
+            password: bcrypt.hashSync("Welcome!", 8), // 8 is used as salt here
+        });
+        console.log("Admin created", user);
+    } catch (err) {
+        console.log("Error while creating admin", err);
+    }
 }
+
 /**
  * Starting the server
  */
