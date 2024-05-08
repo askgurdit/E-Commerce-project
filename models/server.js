@@ -1,13 +1,16 @@
-/**
- * This will be the starting file of the project (Means when we run this file the project will run)
- */
 const express = require("express");
 const mongoose = require("mongoose");
-const app = express(); // Fixed missing parentheses
+const app = express();
 const server_config = require("./configs/server.config");
 const { db_config, DB_URL } = require("./configs/db.config");
 const user_model = require("./user.model");
 const bcrypt = require("bcryptjs");
+
+app.use(express.json());
+
+// Stitch the route to the server
+const authRoutes = require("./routes/auth.route");
+app.use("/eComm/api/v1/auth", authRoutes); // Use the correct path here
 
 // Connection with MongoDB
 mongoose.connect(DB_URL);
@@ -39,9 +42,7 @@ async function init() {
     }
 }
 
-/**
- * Starting the server
- */
+// Starting the server
 app.listen(server_config.PORT, () => {
     console.log("Server started at port num :", server_config.PORT);
 });
