@@ -47,6 +47,18 @@ app.listen(server_config.PORT, () => {
     console.log("Server started at port num :", server_config.PORT);
 });
 
+
+/**
+ * {
+    "name": "YourName2",
+    "userID": "yourUserID2",
+    "email": "your@email2.com",
+    "userType": "CUSTOMER",
+    "password": "yourPasswo123"
+}
+ */
+
+
 /** BELOW IS THE CODE WITH PASSWORD FEILD  IN THE POSTMAN OUTPUT TOO.....
  * const bcrypt = require("bcryptjs");
 const user_model = require("../user.model"); // Adjust the path as per your project structure
