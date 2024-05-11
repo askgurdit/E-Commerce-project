@@ -32,7 +32,7 @@ const verifySignUpBody = (req,res,next) => {
         module.exports = { verifySignUpBody: verify}
 
     }
-} */
+} /////////////////
 
 const user_model = require("../models/user.model");
 
@@ -65,3 +65,70 @@ const verifySignUpBody = async (req, res, next) => {
 };
 
 module.exports = { verifySignUpBody };
+
+const verifySignInBody = async (req,res,next) => {
+    if (req.body.userID) {
+        return res.status (400).send ({
+            message : "userId is not provided"
+        }) 
+    }
+    (! req.body.password) {
+        message : "password is not provided"
+    }
+    next()
+}
+module.exports = {
+    verifySignUpBody : verifySignUpBody , verifySignInBody : verifySignInBody
+}
+*/
+const user_model = require("../models/user.model");
+
+const verifySignUpBody = async (req, res, next) => {
+    try {
+        // Check for the name
+        if (!req.body.name) {
+            return res.status(400).send({ message: "Failed! Name was not provided in request body" });
+        }
+        // Check for the email
+        if (!req.body.email) {
+            return res.status(400).send({ message: "Failed! Email was not provided in request body" });
+        }
+        // Check for the userID
+        if (!req.body.userID) {
+            return res.status(400).send({ message: "Failed! UserID was not provided in request body" });
+        }
+        // check if the user with the same userId is already present
+        const user = await user_model.findOne({ userID: req.body.userID });
+        if (user) {
+            return res.status(400).send({ message: "Failed! User with userID is already present" });
+        }
+        next();
+    } catch (err) {
+        console.log("Error while updating the request object", err);
+        res.status(500).send({
+            message: "Error while updating the request body"
+        });
+    }
+};
+
+const verifySignInBody = async (req, res, next) => {
+    try {
+        if (!req.body.userID) {
+            return res.status(400).send({ message: "UserID is not provided" });
+        }
+        if (!req.body.password) {
+            return res.status(400).send({ message: "Password is not provided" });
+        }
+        next();
+    } catch (err) {
+        console.log("Error while updating the request object", err);
+        res.status(500).send({
+            message: "Error while updating the request body"
+        });
+    }
+};
+
+module.exports = {
+    verifySignUpBody: verifySignUpBody,
+    verifySignInBody: verifySignInBody
+};
