@@ -19,9 +19,23 @@ const router = express.Router();
 const authController = require("../controllers/auth.controller");
 const authMW = require("../middlewares/auth_mw");
 
-router.post("/signup", authMW.verifySignUpBody, authController.signup);
+/**router.post("/signup", authMW.verifySignUpBody, authController.signup);
 
 module.exports = router;
+module.exports = (app) => {
+    app.post ("/eComm/api/v1/signup",[authMW.verifySignUpBody],authController.signup)
+}
+/**
+ * route for
+ * POST localhost:8888/ecomm/api/v1/auth/signin
+
+app.post ("eComm/api.v1/auth/signin")
+ */
+router.post("/signup", authMW.verifySignUpBody, authController.signup);
+router.post("/signin", authController.signin);
+
+module.exports = router;
+
 
 
 

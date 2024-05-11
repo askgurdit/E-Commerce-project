@@ -1,5 +1,7 @@
 const bcrypt = require("bcryptjs");
 const user_model = require("../models/user.model"); // Adjust the path as per your project structure
+const JWT = require("jsonwebtoken");
+const secret = require("../configs/auth.config");
 
 exports.signup = async (req, res) => {
     try {
@@ -44,5 +46,35 @@ exports.signup = async (req, res) => {
         }
         console.log("Error while registering the user", err);
         res.status(500).send({ message: "Some error happened while registering the user" }); // Internal server error
+    }
+};
+
+exports.signin = async (req, res) => {
+    try {
+        // Check if the userId is present in the system
+        const user = await user_model.findOne({ userID: req.body.userID });
+
+        if (!user) {
+            return res.status(400).send({ message: "User ID is not valid" });
+        }
+
+        // Check if the password is correct
+        const isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
+        if (!isPasswordValid) {
+            return res.status(401).send({ message: "Wrong password" });
+        }
+
+        // Create and return the JWT token
+        const token = JWT.sign({ id: user.userID }, secret.secret, { expiresIn: 120 }); // seconds
+        res.status(200).send({
+            name: user.name,
+            userId: user.userID,
+            email: user.email,
+            userType: user.userType,
+            accessToken: token // Corrected typo here
+        });
+    } catch (err) {
+        console.log("Error while signing in the user", err);
+        res.status(500).send({ message: "Some error happened while signing in the user" });
     }
 };
