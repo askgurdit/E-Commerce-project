@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const user_model = require("../user.model"); // Adjust the path as per your project structure
+const user_model = require("../models/user.model"); // Adjust the path as per your project structure
 
 exports.signup = async (req, res) => {
     try {

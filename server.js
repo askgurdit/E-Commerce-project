@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const app = express();
 const server_config = require("./configs/server.config");
 const { db_config, DB_URL } = require("./configs/db.config");
-const user_model = require("./user.model");
+const user_model = require("./models/user.model");
 const bcrypt = require("bcryptjs");
 
 app.use(express.json());

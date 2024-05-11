@@ -17,7 +17,7 @@ module.exports = router;*/
 const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/auth.controller");
-const authMW = require("C:/Users/askdi/OneDrive/Desktop/Github Repo's and JS/Mr beast clone/JavaScript/E-Commerce-project/middlewares/auth_mw.js");
+const authMW = require("../middlewares/auth_mw");
 
 router.post("/signup", authMW.verifySignUpBody, authController.signup);
 
