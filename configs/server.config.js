@@ -1,4 +1,4 @@
 /**
  * THis file will contain server configs
  */
-module.exports = {PORT : 8892}
+module.exports = {PORT : 8893}
